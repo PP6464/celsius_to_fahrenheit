@@ -1,5 +1,5 @@
 # Celsius to Fahrenheit
-This is a simple application that takes in a celsius temperature (rounded towards zero), and outputs the corresponding Fahrenheit temperature (rounded towards zero). It is written using the NASM syntax
+This is a simple application that takes in a celsius temperature (rounded towards zero), and outputs the corresponding Fahrenheit temperature (rounded towards zero). It is written using the NASM assembler.
 ## Platforms
 This only runs on Linux x86_64
 ## How to run
