@@ -2,7 +2,8 @@
 %define EXIT_SUCCESS 0
 %define EXIT_ERROR 1
 %define NEWLINE 10
-%define INPUT_BUFFER_SIZE 5
+%define INPUT_BUFFER_SIZE 10
+%define OUTPUT_BUFFER_SIZE 15
 
 %define VALID 1
 %define INVALID 0
@@ -11,7 +12,7 @@ section .bss
     input: resb INPUT_BUFFER_SIZE
     temperature_celsius: resb 4
     temperature_fahrenheit: resb 4
-    output: resb INPUT_BUFFER_SIZE + 1  ; Just the extra byte for safety
+    output: resb OUTPUT_BUFFER_SIZE
 
 section .text
 
@@ -21,10 +22,6 @@ extern print
 extern println
 extern println_error
 extern validate_for_float
-extern validate_for_int
-extern convert_32_bit_int_to_string
-extern convert_string_to_32_bit_int
-extern celsius_to_fahrenheit_int
 extern celsius_to_fahrenheit
 extern convert_string_to_float
 extern convert_float_to_string

@@ -3,85 +3,13 @@
 %define CHR_0 48
 %define CHR_9 57
 %define NEWLINE 10
-%define DP 2  ; Number of decimal places
+%define DP 5  ; Number of decimal places
 
 extern length_of_string
 
-global celsius_to_fahrenheit_int
 global celsius_to_fahrenheit
-global convert_string_to_32_bit_int
-global convert_32_bit_int_to_string
 global convert_string_to_float
 global convert_float_to_string
-
-; Converts a string to a signed 32-bit integer
-; rdi: pointer to start of string
-; rsi: pointer to integer buffer (4 bytes)
-; return: the integer will be stored in the specified buffer 
-convert_string_to_32_bit_int:
-    call length_of_string  ; string pointer already in rdi
-    mov cl, al  ; store the length in cl
-
-    ; Set up an 8-byte stack frame
-    ; [rbp - 1]: Whether or not there was a hyphen (to multiply by -1 at the end)
-    ; [rbp - 2]: byte counter for how many characters encountered
-    ; PS: cl will contain the length of the string
-    push rbp
-    mov rbp, rsp
-    sub rsp, 8
-    mov word [rbp - 2], 0
-    mov rax, 0  ; Clear rax
-
-    .next_char:
-        mov al, byte [rbp - 2]  ; rax now has the number of characters encountered
-        cmp byte [rdi + rax], CHR_HYPHEN
-        jne .not_hyphen
-        inc byte [rbp - 1]  ; Encountered a hyphen
-        inc byte [rbp - 2]
-        jmp .next_char
-
-        .not_hyphen:
-            imul ebx, dword [rsi], 10  ; Multiply the current value by 10 and move it into ebx
-            movzx edx, byte [rdi + rax]
-            add ebx, edx
-            sub ebx, CHR_0 ; Want to add the value of the digit, not the ASCII code
-            mov dword [rsi], ebx  ; Store the current value back into the buffer
-
-        ; Check if this was meant to be the last character
-        inc byte [rbp - 2]
-        cmp byte [rbp - 2], cl
-        jl .next_char
-
-    cmp byte [rbp - 1], 0
-    je .done
-
-    .check_for_minus:
-        ; Negate the integer if it is meant to be negative
-        imul ebx, dword [rsi], -1
-        mov dword [rsi], ebx
-
-    .done:
-        ; Collapse the stack and return
-        mov rsp, rbp
-        pop rbp
-        ret
-
-
-; Convert celsius int to fahrenheit int
-; rdi: pointer to celsius integer buffer (4 bytes)
-; rsi: pointer to fahrenheit output integer buffer (4 bytes)
-; return: fahrenheit value stored in the specified output buffer
-celsius_to_fahrenheit_int:
-    ; Notice how multiplying by 1.8 is the same as multiplying by 9 then dividing by 5
-    imul eax, dword [rdi], 9
-    cdq  ; Sign extend into edx:eax
-    mov ecx, 5
-    idiv ecx
-    ; Now eax contains the output, and edx contains the remainder
-    add eax, 32
-    mov dword [rsi], eax  ; store the output where desired
-
-    ret
 
 ; Converts a 32-bit integer to a string
 ; rdi: pointer to integer buffer (4 bytes)
