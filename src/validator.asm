@@ -93,8 +93,12 @@ validate_for_float:
             ; Check if this is meant to be the last character
             inc byte [rbp - 1]
             cmp byte [rbp - 1], cl
-            je .valid
+            je .check_last_char
             jmp .next_char
+
+    .check_last_char:
+        cmp byte [rbp - 4], PREV_NUM  ; The last character should be a number for the input to be valid
+        jne .invalid        
 
     .valid:
         mov rax, 1

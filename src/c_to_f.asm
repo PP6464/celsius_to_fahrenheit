@@ -24,7 +24,10 @@ extern validate_for_float
 extern validate_for_int
 extern convert_32_bit_int_to_string
 extern convert_string_to_32_bit_int
+extern celsius_to_fahrenheit_int
 extern celsius_to_fahrenheit
+extern convert_string_to_float
+extern convert_float_to_string
 
 _start:
     ; print input prompt
@@ -38,14 +41,14 @@ _start:
 
     ; Validate input
     lea rdi, [input]
-    call validate_for_int
+    call validate_for_float
     cmp rax, INVALID
     je .invalid
 
-    ; Convert input to int
+    ; Convert input to float
     ; Input already in rdi
     lea rsi, [temperature_celsius]
-    call convert_string_to_32_bit_int
+    call convert_string_to_float
 
     ; C to F
     lea rdi, [temperature_celsius]
@@ -55,7 +58,7 @@ _start:
     ; Convert output to string
     lea rdi, [temperature_fahrenheit]
     lea rsi, [output]
-    call convert_32_bit_int_to_string
+    call convert_float_to_string
 
     ; Print the output text
     lea rdi, [fahrenheit_output]
@@ -82,6 +85,6 @@ _start:
         syscall
 
 section .data
-    enter_celsius: db "Enter temperature in Celsius (rounded towards zero): ", NEWLINE
+    enter_celsius: db "Enter temperature in Celsius: ", NEWLINE
     invalid_input: db "Invalid input. Closing the program...", NEWLINE
-    fahrenheit_output: db "The temperature in Fahrenheit (rounded towards zero) is: ", NEWLINE
+    fahrenheit_output: db "The temperature in Fahrenheit is: ", NEWLINE
