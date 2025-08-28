@@ -37,6 +37,8 @@ global read_from_stdin
 ; return: The result will be stored in the specified buffer, and number of bytes read will be stored in rax
 read_from_stdin:
     ; Set up 24 byte stack frame
+    ; [rbp - 8]: quadword copy of the original rdi
+    ; [rbp - 16]: quadword copy of the number of bytes read
     push rbp  ; rbp is 8 bytes long (a quadword)
     mov rbp, rsp
     sub rsp, 24
