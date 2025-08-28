@@ -60,7 +60,7 @@ println:
 
 
 ; Prints a string to the STDERR stream
-; Normally as this would be the last message printed we would want it to print with a newline (to ensure there is no pesk % sign)
+; Normally as this would be the last message printed we would want it to print with a newline (to ensure there is no pesky % sign)
 ; rdi: pointer to string
 println_error:
     call length_of_string
