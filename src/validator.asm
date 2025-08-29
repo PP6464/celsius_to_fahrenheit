@@ -18,7 +18,7 @@ extern length_of_string
 
 ; Ensure the given string input is a valid float
 ; rdi: pointer to start of input
-; return: 0 or 1 in rax (0 for invalid, 1 for valid)
+; return: VALID or INVALID in rax
 validate_for_float:
     call length_of_string  ; rax now contains the length of the string
 
